@@ -16,8 +16,8 @@ import javax.inject.Inject
 class PostFragment :Fragment(){
     @Inject
     lateinit var viewModel : PostViewModel
-    var items: List<Post>? = null
     var recyclerView : RecyclerView? = null
+    var adapter : PostAdapter? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FeedMeApplication.component.inject(this)
@@ -25,14 +25,19 @@ class PostFragment :Fragment(){
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.getPosts()
-        items = viewModel.list
+        viewModel.getPosts(::onPostsReady)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerView = view.findViewById(R.id.recyclerView)
         recyclerView?.layoutManager = LinearLayoutManager(view.context)
+    }
+
+    private fun onPostsReady(posts : List<Post>?){
+        println(posts)
+        adapter = PostAdapter(posts ?: listOf())
+        recyclerView?.adapter = adapter
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
