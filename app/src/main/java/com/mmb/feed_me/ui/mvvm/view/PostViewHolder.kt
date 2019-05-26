@@ -11,7 +11,6 @@ class PostViewHolder(itemView : View) : RecyclerView.ViewHolder(itemView){
     private val title = itemView.findViewById<TextView>(R.id.title)
     private val body = itemView.findViewById<TextView>(R.id.body)
     fun bind(post: Post){
-        println(post.title)
         userId.text = post.userId.toString()
         title.text = post.title
         body.text = post.body
